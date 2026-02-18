@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Intercom App — index.html</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @keyframes fade-in { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slide-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slide-left { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    .animate-fade-in { animation: fade-in 0.6s ease-out; }
+    .animate-slide-up { animation: slide-up 0.4s ease-out; }
+    .animate-slide-left { animation: slide-left 0.5s ease-out; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    pre { white-space: pre-wrap; }
+    img.object-contain { object-fit: contain; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4 md:p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-12 animate-fade-in">
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <!-- Header image (object-contain sehingga tidak terpotong) -->
+        <img id="headerImage"
+             class="w-20 h-20 rounded-xl animate-float object-contain"
+             src="https://i.imgur.com/7cvCZVb.png"
+             alt="Logo" loading="lazy" />
+        <div class="text-left">
+          <!-- Judul & subjudul yang diminta -->
+          <h1 class="text-2xl font-bold">WEBSITE INTERCOM BIDANG K&PSDM</h1>
+          <p class="text-sm text-purple-300">BEM FKM UNDIP 2026 - KABINET ARUNIKA</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+      <!-- Left Panel - Input Form -->
+      <div class="space-y-6">
+        <!-- Select Staff -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 shadow-xl hover:shadow-purple-500/20 transition-all duration-300">
+          <label class="flex items-center gap-2 text-lg font-semibold mb-3 text-purple-300">
+            <!-- inline user icon -->
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 21v-2a4 4 0 00-3-3.87M4 21v-2a4 4 0 013-3.87M16 3.13a4 4 0 010 7.75M8 3.13a4 4 0 010 7.75"></path></svg>
+            Pengirim
+          </label>
+          <select id="staffSelect" class="w-full bg-slate-800/50 border border-purple-500/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+            <option value="">-- Pilih Staff --</option>
+          </select>
+        </div>
+
+        <!-- Search Box -->
+        <div id="searchBlock" class="hidden bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 shadow-xl animate-slide-up">
+          <label class="flex items-center gap-2 text-lg font-semibold mb-3 text-purple-300">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 21l-4.35-4.35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Cari Kontak
+          </label>
+          <input id="searchInput" type="text" placeholder="Cari nama atau unit..." class="w-full bg-slate-800/50 border border-purple-500/50 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all" />
+        </div>
+
+        <!-- Contact List -->
+        <div id="contactsBlock" class="hidden bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 shadow-xl max-h-96 overflow-y-auto animate-slide-up">
+          <h3 class="text-lg font-semibold mb-4 text-purple-300">Pilih Penerima</h3>
+          <div id="contactsList" class="space-y-2"></div>
+        </div>
+
+        <!-- Format Chat Selection -->
+        <div id="formatBlock" class="hidden bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 shadow-xl animate-slide-up">
+          <label class="flex items-center gap-2 text-lg font-semibold mb-3 text-purple-300">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Format Chat
+          </label>
+          <select id="formatSelect" class="w-full bg-slate-800/50 border border-purple-500/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+            <option value="keperluan">Keperluan</option>
+            <option value="perkenalan">Perkenalan</option>
+          </select>
+        </div>
+
+        <!-- Time Selection -->
+        <div id="waktuBlock" class="hidden bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 shadow-xl animate-slide-up">
+          <label class="flex items-center gap-2 text-lg font-semibold mb-3 text-purple-300">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Pilih Waktu Pengiriman
+          </label>
+          <div id="waktuButtons" class="grid grid-cols-2 gap-3"></div>
+        </div>
+
+        <!-- Purpose -->
+        <div id="tujuanBlock" class="hidden bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 shadow-xl animate-slide-up">
+          <label class="block text-lg font-semibold mb-3 text-purple-300">Tujuan Menghubungi</label>
+          <textarea id="tujuanInput" placeholder="Isi pesan anda di sini" rows="4" class="w-full bg-slate-800/50 border border-purple-500/50 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all resize-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Right Panel - Preview & Actions -->
+      <div id="rightPanel" class="space-y-6 animate-slide-left hidden">
+        <!-- Preview -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 shadow-xl">
+          <h3 class="text-lg font-semibold mb-4 text-purple-300">📱 Preview Pesan</h3>
+          <div class="bg-slate-800/70 rounded-xl p-6 max-h-96 overflow-y-auto">
+            <pre id="previewMessage" class="text-sm text-gray-200 font-sans leading-relaxed"></pre>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-2 gap-4">
+          <button id="copyBtn" class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 p-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105 active:scale-95">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke-width="1.5"/><rect x="2" y="2" width="13" height="13" rx="2" ry="2" stroke-width="1.5"/></svg>
+            <span id="copyBtnText">Salin Pesan</span>
+          </button>
+          <button id="sendBtn" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 p-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-green-500/50 hover:scale-105 active:scale-95">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 2L11 13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2l-7 20 1-7 7-13z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Kirim WA
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-12 text-center text-purple-300 text-sm">
+      <p>© 2026 — Designed & Developed by Program, Sinergitas, dan Informasi</p>
+    </div>
+  </div>
+
+  <script>
+    // Data (tetap sama) -- hanya nama pengirim diubah sesuai permintaan
+    const STAFF_DATA = {
+      evan: {
+        name: 'Evandra Ramadhan Azriel Sanyoto',
+        contacts: [
+          { nama: 'Fikhar', unit: 'Ketua BEM FKM', phone: '082116796008' },
+          { nama: 'Ilham', unit: 'Ketua Himpunan Mahasiswa Kesehatan Masyarakat', phone: '089539714525' },
+          { nama: 'Jey', unit: 'Departemen PPI Himpunan Mahasiswa Kesehatan Masyarakat', phone: '0811128644' },
+          { nama: 'Farah', unit: 'Departemen PI Himpunan Mahasiswa Program Studi Keselamatan dan Kesehatan Kerja', phone: '082137753469' },
+          { nama: 'Maharani', unit: 'Ketua Peminatan Kesehatan Lingkungan', phone: '08139340970' },
+          { nama: 'Alifah', unit: 'Biro KMI BEM FKM', phone: '08117671202' },
+          { nama: 'Deny', unit: 'Bidang K&PENGMAS BEM FKM', phone: '08112618995' }
+        ]
+      },
+      jeo: {
+        name: 'Jeovanni Ladonia Sitohang',
+        contacts: [
+          { nama: 'Karen', unit: 'PSM FKM', phone: '08121411801' },
+          { nama: 'Syakira', unit: 'Departemen Keilmuan Himpunan Mahasiswa Kesehatan Masyarakat', phone: '085769569991' },
+          { nama: 'Fibri', unit: 'Departemen Medinfo Himpunan Mahasiswa Program Studi Keselamatan dan Kesehatan Kerja', phone: '081325740363' },
+          { nama: 'Husain', unit: 'Peminatan K3', phone: '087722460391' },
+          { nama: 'Milda', unit: 'Biro Admin BEM FKM', phone: '081332334398' },
+          { nama: 'Jihan', unit: 'Bidang Mikat BEM FKM', phone: '088215109680' }
+        ]
+      },
+      lily: {
+        name: 'Luthfi Dian Anggraini',
+        contacts: [
+          { nama: 'Amanda', unit: 'PIRC', phone: '6289536334701' },
+          { nama: 'Cornelia', unit: 'Sportyca', phone: '085212367554' },
+          { nama: 'Kinan', unit: 'Departemen Kemahasiswaan Himpunan Mahasiswa Kesehatan Masyarakat', phone: '087738831766' },
+          { nama: 'Shifa', unit: 'Departemen PSDM Himpunan Mahasiswa Program Studi Keselamatan dan Kesehatan Kerja', phone: '081390240726' },
+          { nama: 'Salwa Audrie', unit: 'Peminatan Epidemiologi', phone: '089521897115' },
+          { nama: 'Surya Natanegara', unit: 'Peminatan Entomologi', phone: '085718921051' },
+          { nama: 'Maulida', unit: 'Bidang Riskel BEM FKM', phone: '085877335371' },
+          { nama: 'Darin', unit: 'Bidang Ekotif BEM FKM', phone: '089669129858' }
+        ]
+      },
+      wawa: {
+        name: 'Aulia Zahwa Fachrina',
+        contacts: [
+          { nama: 'Naila', unit: 'Senat', phone: '082110063943' },
+          { nama: 'Arina', unit: 'Departemen PSDM Himpunan Mahasiswa Kesehatan Masyarakat', phone: '087782951049' },
+          { nama: 'Ruth', unit: 'Departemen Tipemu Himpunan Mahasiswa Program Studi Keselamatan dan Kesehatan Kerja', phone: '085271024742' },
+          { nama: 'Rayung', unit: 'Peminatan PKIP', phone: '087839475453' },
+          { nama: 'Ghifari', unit: 'Komting 2025', phone: '081918481223' },
+          { nama: 'Ghani', unit: 'Bidang Sospol BEM FKM', phone: '087885156165' },
+          { nama: 'Daffa', unit: 'Bidang Harkam BEM FKM', phone: '082134809481' }
+        ]
+      },
+      aru: {
+        name: 'Aurura Anandefa',
+        contacts: [
+          { nama: 'Sera', unit: 'Studio8', phone: '087889808483' },
+          { nama: 'Dita', unit: 'Departemen KMI Himpunan Mahasiswa Kesehatan Masyarakat', phone: '085712724984' },
+          { nama: 'Alma', unit: 'Departemen Pengmas Himpunan Mahasiswa Program Studi Keselamatan dan Kesehatan Kerja', phone: '085210586748' },
+          { nama: 'Nazwa', unit: 'Peminatan AKK', phone: '08113978978' },
+          { nama: 'Bima', unit: 'Bidang Kestra BEM FKM', phone: '081229801055' }
+        ]
+      },
+      faiza: {
+        name: 'Faiza Salihamida Aziza',
+        contacts: [
+          { nama: 'Andi', unit: 'Ketua Himpunan Mahasiswa Program Studi Keselamatan dan Kesehatan Kerja', phone: '085884781730' },
+          { nama: 'Deswita', unit: 'Departemen Sosmas Himpunan Mahasiswa Kesehatan Masyarakat', phone: '087810076394' },
+          { nama: 'Winda', unit: 'Departemen Seniora Himpunan Mahasiswa Program Studi Keselamatan dan Kesehatan Kerja', phone: '089601418488' },
+          { nama: 'Syahfitri', unit: 'Peminatan Gizi Kesmas', phone: '085716738931' },
+          { nama: 'Mutia', unit: 'Pokja ISMKMI BEM FKM', phone: '081297220219' }
+        ]
+      },
+      ian: {
+        name: 'Raffy Putra Ardiansyah',
+        contacts: [
+          { nama: 'Dinda', unit: 'KSR', phone: '085727583052' },
+          { nama: 'Talitha', unit: 'Departemen Seniora Himpunan Mahasiswa Kesehatan Masyarakat', phone: '081918431357' },
+          { nama: 'Grinna', unit: 'Departemen Notif Himpunan Mahasiswa Program Studi Keselamatan dan Kesehatan Kerja', phone: '081932371915' },
+          { nama: 'Taat Wigati', unit: 'Peminatan Biostatistika & Kependudukan', phone: '088225234055' },
+          { nama: 'Sulthon', unit: 'Bidang CED BEM FKM', phone: '089980232596' }
+        ]
+      },
+      kattari: {
+        name: 'Alifia Safira Adekattari',
+        contacts: [
+          { nama: 'Muna', unit: 'Departemen Kewirausahaan Himpunan Mahasiswa Kesehatan Masyarakat', phone: '085713187074' },
+          { nama: 'Zahirah', unit: 'Penwa', phone: '082138316959' },
+          { nama: 'Grestine', unit: 'Komting 2023', phone: '085881797522' },
+          { nama: 'Andreas', unit: 'Komting 2024', phone: '085695572360' },
+          { nama: 'Neibila', unit: 'Bidang Kesma BEM FKM', phone: '081228935025' }
+        ]
+      }
+    };
+
+    const GREETINGS = { pagi: 'pagi', siang: 'siang', sore: 'sore', malam: 'malam' };
+
+    // State
+    let selectedStaff = '';
+    let selectedContact = null;
+    let waktu = 'pagi';
+    let tujuan = '';
+    let searchQuery = '';
+    let formatChat = 'keperluan';
+    let copiedTimeout = null;
+
+    // Elements
+    const staffSelect = document.getElementById('staffSelect');
+    const searchBlock = document.getElementById('searchBlock');
+    const searchInput = document.getElementById('searchInput');
+    const contactsBlock = document.getElementById('contactsBlock');
+    const contactsList = document.getElementById('contactsList');
+    const formatBlock = document.getElementById('formatBlock');
+    const formatSelect = document.getElementById('formatSelect');
+    const waktuBlock = document.getElementById('waktuBlock');
+    const waktuButtons = document.getElementById('waktuButtons');
+    const tujuanBlock = document.getElementById('tujuanBlock');
+    const tujuanInput = document.getElementById('tujuanInput');
+    const rightPanel = document.getElementById('rightPanel');
+    const previewMessageEl = document.getElementById('previewMessage');
+    const copyBtn = document.getElementById('copyBtn');
+    const copyBtnText = document.getElementById('copyBtnText');
+    const sendBtn = document.getElementById('sendBtn');
+    const headerImage = document.getElementById('headerImage');
+
+    // Init
+    function init() {
+      Object.entries(STAFF_DATA).forEach(([key, data]) => {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = data.name;
+        staffSelect.appendChild(opt);
+      });
+
+      Object.keys(GREETINGS).forEach(key => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = key.charAt(0).toUpperCase() + key.slice(1);
+        btn.className = `p-3 rounded-xl transition-all duration-300 capitalize ${waktu === key ? 'bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg scale-105' : 'bg-slate-800/50 hover:bg-slate-700/50'}`;
+        btn.addEventListener('click', () => {
+          waktu = key;
+          updateWaktuButtons();
+          renderPreview();
+        });
+        waktuButtons.appendChild(btn);
+      });
+
+      staffSelect.addEventListener('change', (e) => {
+        selectedStaff = e.target.value;
+        selectedContact = null;
+        searchQuery = '';
+        searchInput.value = '';
+        copyBtnText.textContent = 'Salin Pesan';
+        searchBlock.classList.toggle('hidden', !selectedStaff);
+        contactsBlock.classList.toggle('hidden', !selectedStaff);
+        formatBlock.classList.add('hidden');
+        waktuBlock.classList.add('hidden');
+        tujuanBlock.classList.add('hidden');
+        rightPanel.classList.add('hidden');
+        updateContacts();
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim();
+        updateContacts();
+      });
+
+      formatSelect.addEventListener('change', (e) => {
+        formatChat = e.target.value;
+        renderPreview();
+        checkRightPanelVisibility();
+      });
+
+      tujuanInput.addEventListener('input', (e) => {
+        tujuan = e.target.value;
+        renderPreview();
+        checkRightPanelVisibility();
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        const msg = generateMessage();
+        if (!msg) return;
+        try {
+          await navigator.clipboard.writeText(msg);
+          copyBtnText.textContent = 'Tersalin!';
+          if (copiedTimeout) clearTimeout(copiedTimeout);
+          copiedTimeout = setTimeout(() => { copyBtnText.textContent = 'Salin Pesan'; }, 2000);
+        } catch (err) {
+          prompt('Salin pesan ini secara manual:', msg);
+        }
+      });
+
+      sendBtn.addEventListener('click', () => {
+        if (!selectedContact) return;
+        const message = generateMessage();
+        if (!message) return;
+        const encodedMessage = encodeURIComponent(message);
+        const phone = normalizePhoneForWa(selectedContact.phone);
+        window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+      });
+
+      // klik headerImage untuk mengganti src (opsional)
+      headerImage.addEventListener('click', () => {
+        const newSrc = prompt('Tempel URL gambar atau data:image/... (base64). Kosongkan untuk menghapus:');
+        if (newSrc === null) return;
+        headerImage.src = newSrc.trim() === '' ? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' : newSrc.trim();
+      });
+    }
+
+    // Helpers
+    function getFilteredContacts() {
+      if (!selectedStaff) return [];
+      const contacts = STAFF_DATA[selectedStaff]?.contacts || [];
+      if (!searchQuery) return contacts;
+      const q = searchQuery.toLowerCase();
+      return contacts.filter(contact =>
+        (contact.nama || '').toLowerCase().includes(q) ||
+        (contact.unit || '').toLowerCase().includes(q)
+      );
+    }
+
+    function updateContacts() {
+      contactsList.innerHTML = '';
+      const filtered = getFilteredContacts();
+      if (filtered.length === 0) {
+        contactsList.innerHTML = '<div class="text-sm text-gray-400">Tidak ada kontak.</div>';
+        return;
+      }
+      filtered.forEach((contact) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `w-full text-left p-4 rounded-xl transition-all duration-300 ${selectedContact?.phone === contact.phone ? 'bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg scale-105' : 'bg-slate-800/50 hover:bg-slate-700/50'}`;
+        btn.innerHTML = `
+          <div class="font-semibold text-lg">${escapeHtml(contact.unit)}</div>
+          <div class="text-sm text-purple-300 mt-1">${escapeHtml(contact.nama)}</div>
+          <div class="text-xs text-gray-400 mt-1">${escapeHtml(contact.phone)}</div>
+        `;
+        btn.addEventListener('click', () => {
+          selectedContact = contact;
+          tujuan = tujuanInput.value.trim();
+          formatBlock.classList.remove('hidden');
+          waktuBlock.classList.remove('hidden');
+          tujuanBlock.classList.remove('hidden');
+          updateContacts();
+          updateWaktuButtons();
+          renderPreview();
+          checkRightPanelVisibility();
+        });
+        contactsList.appendChild(btn);
+      });
+    }
+
+    function updateWaktuButtons() {
+      Array.from(waktuButtons.children).forEach(btn => {
+        const key = btn.textContent.toLowerCase();
+        if (key === waktu) {
+          btn.className = 'p-3 rounded-xl transition-all duration-300 capitalize bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg scale-105';
+        } else {
+          btn.className = 'p-3 rounded-xl transition-all duration-300 capitalize bg-slate-800/50 hover:bg-slate-700/50';
+        }
+      });
+    }
+
+    // Helper functions untuk parsing unit
+    function stripLeadingKetua(unit) {
+      return String(unit || '').replace(/^\s*Ketua\s+/i, '');
+    }
+
+    function ensureKetuaPrefix(unit) {
+      if (/^\s*Ketua\s+/i.test(unit)) return unit;
+      return 'Ketua ' + unit;
+    }
+
+    function extractUnitType(unit) {
+      const unitStr = String(unit || '').toLowerCase();
+      if (unitStr.includes('departemen')) {
+        return stripLeadingKetua(unit);
+      } else if (unitStr.includes('peminatan')) {
+        return stripLeadingKetua(unit);
+      } else if (unitStr.includes('bidang')) {
+        return stripLeadingKetua(unit);
+      } else if (unitStr.includes('biro')) {
+        return stripLeadingKetua(unit);
+      } else if (unitStr.includes('ketua')) {
+        return stripLeadingKetua(unit);
+      } else {
+        return unit;
+      }
+    }
+
+    function generateMessageKeperluan() {
+      if (!selectedContact || !tujuan.trim()) return '';
+      const staffName = STAFF_DATA[selectedStaff]?.name || '';
+      const greeting = GREETINGS[waktu] || GREETINGS.pagi;
+      const unitPara2 = stripLeadingKetua(selectedContact.unit || '');
+      const unitForMaksud = ensureKetuaPrefix(selectedContact.unit || '');
+      const jeoSuffix = (selectedStaff === 'jeo') ? ' Undip 2026' : '';
+      
+      return `Assalamualaikum Wr. Wb. Selamat ${greeting}, Kak ${selectedContact.nama}. Mohon maaf apabila mengganggu waktunya.
+
+Perkenalkan kembali saya ${staffName} selaku Staf Muda Bidang Keorganisasian dan Pengembangan Sumber Daya Manusia (K&PSDM) BEM FKM${jeoSuffix} yang merupakan perwakilan Intercom Bidang K&PSDM BEM FKM dengan ${unitPara2}.
+
+Maksud dan tujuan saya menghubungi Kak ${selectedContact.nama} selaku ${unitForMaksud} 2026 adalah untuk ${tujuan}
+
+Sekian informasi yang dapat saya sampaikan. Terima kasih atas perhatian, Kak ${selectedContact.nama}. Mohon maaf apabila terdapat kesalahan dalam penggunaan kata. Selamat ${greeting}, Kak ${selectedContact.nama}. Wassalamualaikum Wr. Wb.`;
+    }
+
+    function generateMessagePerkenalan() {
+      if (!selectedContact) return '';
+      const staffName = STAFF_DATA[selectedStaff]?.name || '';
+      const greeting = GREETINGS[waktu] || GREETINGS.pagi;
+      const unitExtracted = extractUnitType(selectedContact.unit || '');
+      
+      return `Assalamualaikum Wr. Wb. Selamat ${greeting}, Kak ${selectedContact.nama}. Mohon maaf mengganggu waktunya.
+
+Perkenalkan saya ${staffName} selaku Staf Muda Bidang K&PSDM BEM FKM Undip 2026 yang merupakan perwakilan Intercom Bidang K&PSDM BEM FKM Undip 2026 dengan ${unitExtracted}. Sebelumnya, saya mendapatkan nomor Kak ${selectedContact.nama} dari Ketua Bidang K&PSDM BEM FKM Undip 2026.
+
+Maksud dan tujuan saya menghubungi Kak ${selectedContact.nama} selaku ${ensureKetuaPrefix(selectedContact.unit || '')} adalah untuk memperkenalkan diri sebagai Intercom Bidang K&PSDM dengan ${unitExtracted}.
+
+Intercom merupakan sebuah jaringan komunikasi atau narahubung antara Bidang K&PSDM BEM FKM Undip dengan lembaga atau UKM-F di FKM Undip yang berkaitan dengan kaderisasi. Tujuan dari Intercom yaitu menjaga hubungan yang baik dan memudahkan penyebaran informasi serta perkembangan terkait kaderisasi di FKM Undip. Semoga untuk ke depannya, komunikasi melalui Intercom antara Bidang K&PSDM BEM FKM Undip dengan ${unitExtracted} dapat berjalan dengan baik dan tanpa kendala.
+
+Oleh karena itu, apakah Kak ${selectedContact.nama} berkenan melakukan Intercom dengan Bidang K&PSDM BEM FKM Undip 2026?
+
+Sekian informasi yang dapat saya sampaikan. Terima kasih atas perhatian Kak ${selectedContact.nama}, mohon maaf apabila terdapat kesalahan dalam penggunaan kata.
+
+Selamat ${greeting}, Kak ${selectedContact.nama}.
+Wassalamualaikum Wr. Wb.`;
+    }
+
+    function generateMessage() {
+      if (formatChat === 'perkenalan') {
+        return generateMessagePerkenalan();
+      } else {
+        return generateMessageKeperluan();
+      }
+    }
+
+    // Normalize phone for wa.me link:
+    function normalizePhoneForWa(raw) {
+      if (!raw) return '';
+      const digits = String(raw).replace(/\D/g, '');
+      if (digits.startsWith('62')) return digits;
+      if (digits.startsWith('0')) return digits.replace(/^0+/, '62');
+      if (digits.startsWith('8')) return '62' + digits;
+      return '62' + digits;
+    }
+
+    function renderPreview() {
+      previewMessageEl.textContent = generateMessage();
+    }
+
+    function checkRightPanelVisibility() {
+      if (selectedContact) {
+        if (formatChat === 'perkenalan') {
+          rightPanel.classList.remove('hidden');
+        } else if (formatChat === 'keperluan' && tujuan.trim()) {
+          rightPanel.classList.remove('hidden');
+        } else {
+          rightPanel.classList.add('hidden');
+        }
+      } else {
+        rightPanel.classList.add('hidden');
+      }
+    }
+
+    // simple HTML escape
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    init();
+  </script>
+</body>
+</html>
